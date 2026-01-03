@@ -4,7 +4,7 @@ module Docs
     self.base_url = 'https://laravel.com'
     self.links = {
       home: 'https://laravel.com/',
-      code: 'https://github.com/laravel/laravel'
+      code: 'https://github.com/laravel/framework'
     }
 
     html_filters.push 'laravel/entries', 'laravel/clean_html'
@@ -28,6 +28,20 @@ module Docs
       Licensed under the MIT License.<br>
       Laravel is a trademark of Taylor Otwell.
     HTML
+
+    version '12' do
+      self.release = '12.11.0'
+      self.root_path = '/api/12.x/index.html'
+      self.initial_paths = %w(/docs/12.x/installation /api/12.x/classes.html)
+
+      options[:only_patterns] = [%r{\A/api/12\.x/}, %r{\A/docs/12\.x/}]
+
+      options[:fix_urls] = ->(url) do
+        url.sub! %r{12.x/+}, "12.x/"
+        url.sub! %r{#{Regexp.escape(Laravel.base_url)}/docs\/(?![1-9]?\d)}, "#{Laravel.base_url}/docs/12.x/"
+        url
+      end
+    end
 
     version '11' do
       self.release = '11.11.1'
